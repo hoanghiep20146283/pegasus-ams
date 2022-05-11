@@ -1,0 +1,99 @@
+server:
+  port: ${app.port:11001}
+  servlet:
+    context-path: ${context.path:/ams/api}
+  tomcat:
+    max-threads: 10
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    hikari:
+      minimum-idle: 2 # 3 min-connection allowed in pool
+      maximum-pool-size: 5 # 6 max-connection allowed in pool
+      idle-timeout: 5000 # 2 minutes allowed for connection idle
+      keepalive-time: 60000 # each 5 minutes to re-"pinged" the connection
+      max-lifetime: 600000 # 10 minutes allowed for connection life time
+      leak-detection-threshold: 5000 # only 5 seconds allowed connection can be out of the pool
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+        type: trace
+        use_sql_comments: true
+  redis:
+    database: 0
+    password: ${redis.password:password123}
+    port: ${redis.port:6379}
+    host: ${redis.host:localhost}
+    lettuce:
+      pool:
+        min-idle: 5
+        max-idle: 10
+        max-active: 8
+        max-wait: 1ms
+      shutdown-timeout: 100ms
+  cloud:
+    vault:
+      host: localhost
+      port: 8200
+      scheme: http
+      authentication: token
+      token: s.FEet6MJxdczByJFbxq8orOMZ
+logging:
+  file:
+    name: ./logs/ams.log
+  level:
+    root: ${log.level.root:info}
+    org:
+      springframework: ${log.level.spring:info}
+    com:
+      pegasus: ${log.level.app:debug}
+  pattern:
+    console: "%d{ISO8601} %highlight(%-5level) [%blue(%t)] [%blue(%X{remoteAddr})] [%cyan(%X{tenant})] %yellow(%C{1.}): %msg%n%throwable"
+    file: "%d %p %C{1.} [%t] [%X{remoteAddr}] [%X{tenant}] %m%n"
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+pegasus: # this is where the pegasus-starter config!
+  base:
+    kafka:
+      enabled: ${kafka.enable:true}
+      url: ${kafka.url:http://localhost:9094}
+    filter:
+      auth:
+        user-enabled: true # selectively enable the authentication filter, default is *false*
+        ims-base-url: ${ims.base.url:http://localhost:11003/ims/api}
+      authorization:
+        enabled: true # selectively enable the authorization filter, default is *false*
+    audit: # to enable baseEntity auditable fields
+      enabled: true
+  ats:
+    enabled: true # to enable the audit logging, default is false
+    base-url: ${ats.base.url:http://localhost:11002/ats/api/audit}
+    schema: ats
+app:
+  name: ams
+  ims:
+    base-url: ${ims.base.url:http://localhost:11003/ims/api}
+  cors:
+    allow-origins: ${cors.allow-origins:http://localhost:4200}
+#  vault:
+#    host: ${vault.url:localhost}
+#    port: ${vault.port:8200}
+#    scheme: ${vault.scheme:http}
+#    token: ${vault.token:s.FEet6MJxdczByJFbxq8orOMZ}
+  token:
+    at-exp: ${token.exp:40} # the auth token expiration
+    exp-in-unit: ${token.unit:MINUTES} # time unit (HOURS, MINUTES, SECONDS)

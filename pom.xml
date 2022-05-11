@@ -19,7 +19,8 @@
 	<modules>
 		<module>modules/ams-base</module>
 		<module>modules/ams-api</module>
-	</modules>
+        <module>modules/ams-mgmt</module>
+    </modules>
 
 	<properties>
 		<java.version>1.8</java.version>
