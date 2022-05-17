@@ -14,6 +14,10 @@ spring:
       keepalive-time: 60000 # each 5 minutes to re-"pinged" the connection
       max-lifetime: 600000 # 10 minutes allowed for connection life time
       leak-detection-threshold: 5000 # only 5 seconds allowed connection can be out of the pool
+    password: ${postgresql.datasource.password:password123}
+    driver-class-name: org.postgresql.Driver
+    username: ${postgresql.datasource.username:pegasus002}
+    url: ${postgresql.datasource.dbUrl:jdbc:postgresql://localhost:1234/pegasusdb}
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -26,6 +30,7 @@ spring:
           use_jdbc_metadata_defaults: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+        default_schema: ams
         jdbc:
           time_zone: UTC
         type: trace
@@ -42,13 +47,13 @@ spring:
         max-active: 8
         max-wait: 1ms
       shutdown-timeout: 100ms
-  cloud:
-    vault:
-      host: localhost
-      port: 8200
-      scheme: http
-      authentication: token
-      token: s.FEet6MJxdczByJFbxq8orOMZ
+#  cloud:
+#    vault:
+#      host: localhost
+#      port: 8200
+#      scheme: http
+#      authentication: token
+#      token: s.FEet6MJxdczByJFbxq8orOMZ
 logging:
   file:
     name: ./logs/ams.log
@@ -73,16 +78,11 @@ pegasus: # this is where the pegasus-starter config!
       url: ${kafka.url:http://localhost:9094}
     filter:
       auth:
-        user-enabled: true # selectively enable the authentication filter, default is *false*
         ims-base-url: ${ims.base.url:http://localhost:11003/ims/api}
       authorization:
         enabled: true # selectively enable the authorization filter, default is *false*
-    audit: # to enable baseEntity auditable fields
-      enabled: true
-  ats:
-    enabled: true # to enable the audit logging, default is false
-    base-url: ${ats.base.url:http://localhost:11002/ats/api/audit}
-    schema: ats
+      casbin:
+        enabled: true
 app:
   name: ams
   ims:

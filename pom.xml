@@ -62,11 +62,6 @@
 <!--				<artifactId>pegasus-ats-starter</artifactId>-->
 <!--				<version>${pegasus.ats.starter.version}</version>-->
 <!--			</dependency>-->
-<!--			<dependency>-->
-<!--				<groupId>com.pegasus</groupId>-->
-<!--				<artifactId>pegasus-starter</artifactId>-->
-<!--				<version>${pegasus.base.starter.version}</version>-->
-<!--			</dependency>-->
 			<dependency>
 				<groupId>com.gbgplc.pegasus</groupId>
 				<artifactId>pegasus-auth-starter</artifactId>

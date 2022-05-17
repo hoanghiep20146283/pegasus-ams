@@ -4,6 +4,9 @@ import com.pegasus.ams.mgmt.dto.request.UserDTO;
 import com.pegasus.ams.mgmt.dto.response.UserResponseDTO;
 import com.pegasus.ams.mgmt.entity.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserMapper {
 
     private UserMapper() {
@@ -41,6 +44,14 @@ public class UserMapper {
                 .lastName(user.getLastName())
                 .activated(user.getActivated())
                 .build();
+    }
+
+    public static List<UserResponseDTO> toUserResponseDtoList(List<User> users) {
+        List<UserResponseDTO> userResponseDTOList = new ArrayList<>();
+        users.forEach((user -> {
+            userResponseDTOList.add(toUserResponseDto(user));
+        }));
+        return userResponseDTOList;
     }
 }
 

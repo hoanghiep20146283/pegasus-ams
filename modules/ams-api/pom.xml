@@ -44,23 +44,30 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-vault-config</artifactId>-->
+<!--            <scope>runtime</scope>-->
+<!--            <version>3.0.3</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.vault</groupId>-->
+<!--            <artifactId>spring-vault-core</artifactId>-->
+<!--            <version>2.3.2</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.vault</groupId>-->
+<!--            <artifactId>spring-vault-dependencies</artifactId>-->
+<!--            <version>2.3.2</version>-->
+<!--            <scope>provided</scope>-->
+<!--            <type>pom</type>-->
+<!--        </dependency>-->
+
+        <!-- Own module      -->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-vault-config</artifactId>
-            <scope>runtime</scope>
-            <version>3.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.vault</groupId>
-            <artifactId>spring-vault-core</artifactId>
-            <version>2.3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.vault</groupId>
-            <artifactId>spring-vault-dependencies</artifactId>
-            <version>2.3.2</version>
-            <scope>provided</scope>
-            <type>pom</type>
+            <groupId>com.pegasus</groupId>
+            <artifactId>ams-mgmt</artifactId>
+            <version>${ams.version}</version>
         </dependency>
 
         <!-- Internal module -->
@@ -68,14 +75,11 @@
 <!--            <groupId>com.pegasus</groupId>-->
 <!--            <artifactId>pegasus-ats-starter</artifactId>-->
 <!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.pegasus</groupId>-->
-<!--            <artifactId>pegasus-starter</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.pegasus</groupId>-->
-<!--            <artifactId>pegasus-auth-starter</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.pegasus</groupId>
+            <artifactId>pegasus-auth-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
         <!-- Utils -->
         <dependency>

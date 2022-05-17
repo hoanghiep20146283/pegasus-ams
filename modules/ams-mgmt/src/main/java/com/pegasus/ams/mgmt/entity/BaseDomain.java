@@ -1,8 +1,11 @@
 package com.pegasus.ams.mgmt.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -12,6 +15,9 @@ import java.time.Instant;
 @Getter
 @Setter
 @MappedSuperclass
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 public abstract class BaseDomain implements Serializable {
     private static final long serialVersionUID = 1L;
 
