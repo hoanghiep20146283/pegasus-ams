@@ -4,13 +4,11 @@ import com.pegasus.ams.mgmt.dto.CustomPageDto;
 import com.pegasus.ams.mgmt.dto.request.RoleDTO;
 import com.pegasus.ams.mgmt.dto.response.PermissionDTO;
 import com.pegasus.ams.mgmt.dto.response.RoleResponseDTO;
-import com.pegasus.ams.mgmt.entity.Permission;
 import com.pegasus.ams.mgmt.entity.Role;
 import com.pegasus.ams.mgmt.mapper.PermissionMapper;
 import com.pegasus.ams.mgmt.service.RoleService;
 import com.pegasus.base.utils.SortUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,13 +26,13 @@ public class RoleController {
     RoleService roleService;
 
     @PreAuthorize("hasPermission('Role', 'View')")
-    @GetMapping(value = "/all-roles")
+    @GetMapping(value = "/list")
     public ResponseEntity<List<Role>> getAllRoles() {
         return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
     }
 
     @PreAuthorize("hasPermission('Role', 'View')")
-    @GetMapping(value = "/roles")
+    @GetMapping(value = "/paging")
     public ResponseEntity<CustomPageDto<RoleResponseDTO>> searchRoles(@RequestParam(value = "name", required = false) String name,
                                                                       @RequestParam(value = "page", defaultValue = "1") Integer page,
                                                                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
@@ -45,13 +43,13 @@ public class RoleController {
     }
 
     @PreAuthorize("hasPermission('Role', 'Create')")
-    @PostMapping(value = "/role")
+    @PostMapping(value = "")
     public ResponseEntity<RoleResponseDTO> createRole(@RequestBody RoleDTO roleDTO) {
         return new ResponseEntity<>(roleService.createRole(roleDTO), HttpStatus.OK);
     }
 
     @PreAuthorize("hasPermission('Role', 'Update')")
-    @PutMapping(value = "/role")
+    @PutMapping(value = "")
     public ResponseEntity<RoleResponseDTO> updateRole(@RequestBody RoleDTO roleDTO) {
         return new ResponseEntity<>(roleService.updateRole(roleDTO), HttpStatus.OK);
     }
