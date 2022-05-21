@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pgs-be-ams-ingress
+spec:
+  defaultBackend:
+    service:
+      name: pegasus-ams-service
+      port:
+        number: 11001
+  rules:
+    - host: api.sylveron.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pegasus-ams-service
+                port:
+                  number: 11001
