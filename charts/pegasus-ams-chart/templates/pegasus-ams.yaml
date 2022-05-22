@@ -12,6 +12,8 @@ spec:
       labels:
         app: pegasus-ams
     spec:
+      imagePullSecrets:
+      - name: pegasus-gitlab-registry-share-secret
       containers:
         - image: {{ .Values.image.name }}:{{ .Values.image.tag }}
           name: pegasus-ams
