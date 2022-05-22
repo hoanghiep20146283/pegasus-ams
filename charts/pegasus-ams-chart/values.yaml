@@ -1,0 +1,31 @@
+port: 8000
+image:
+  name: ducvu123/pegasus-ams
+  tag: 0.0.1
+context:
+  path: /ams
+log:
+  level:
+    root: info
+    spring: info
+    app: debug
+kubernetes:
+  imagePullPolicy: Always
+  replicaCount: 1
+appUrl:
+  ui: http://sylveron.com
+  ims: http://pegasus-ims-service/ims/api
+postgresql:
+  datasource:
+    dbUrl: jdbc:postgresql://pegasus-shared-postgres:5432/pegasusdb
+    username: pegasus001
+    password: password123
+redis:
+  port: 6379
+  host: pegasus-shared-redis-master
+kafka:
+  enable: true
+  url: http://sylveron.com:30681
+token:
+  exp: 40
+  unit: MINUTES

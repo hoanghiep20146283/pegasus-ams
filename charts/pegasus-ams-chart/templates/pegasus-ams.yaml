@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pegasus-ams
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pegasus-ams
+  template:
+    metadata:
+      labels:
+        app: pegasus-ams
+    spec:
+      imagePullSecrets:
+        - name: pegasus-gitlab-registry-share-secret
+      containers:
+        - image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+          name: pegasus-ams
+          imagePullPolicy: {{ .Values.kubernetes.imagePullPolicy }}
+          env:
+            - name: SPRING_APPLICATION_JSON
+              valueFrom:
+                configMapKeyRef:
+                  name: ams-config
+                  key: config.json
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pegasus-ams-service
+spec:
+  selector:
+    app: pegasus-ams
+  ports:
+    - protocol: TCP
+      port: 11001
+      targetPort: 11001
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ams-config
+data:
+  config.json:
+    '{
+      "app.port": {{.Values.port}},
+      "context.path" : "{{.Values.context.path}}",
+      "log.level.root" : "{{.Values.log.level.root}}",
+      "log.level.spring" : "{{.Values.log.level.spring}}",
+      "log.level.app" : "{{.Values.log.level.app}}",
+      "cors.allow-origins" : "{{.Values.appUrl.ui}}",
+      "ims.base.url" : "{{.Values.appUrl.ims}}",
+      "postgresql.datasource.password": "{{.Values.postgresql.datasource.password}}",
+      "postgresql.datasource.username": "{{.Values.postgresql.datasource.username}}",
+      "postgresql.datasource.dbUrl": "{{.Values.postgresql.datasource.dbUrl}}",
+      "redis.password": "{{.Values.redis.password}}",
+      "redis.port": "{{.Values.redis.port}}",
+      "redis.host": "{{.Values.redis.host}}",
+      "kafka.url": "{{.Values.kafka.url}}",
+      "kafka.enable": "{{.Values.kafka.enable}}",
+      "token.exp": "{{.Values.token.exp}}",
+      "token.unit": "{{.Values.token.unit}}",
+     }'
