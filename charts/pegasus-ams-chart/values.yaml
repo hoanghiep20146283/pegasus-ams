@@ -10,20 +10,19 @@ log:
     spring: info
     app: debug
 kubernetes:
-  #    imagePullSecrets:
   imagePullPolicy: Always
   replicaCount: 1
 appUrl:
   ui: http://sylveron.com
-  ims: http://api.sylveron.com/ims/api
+  ims: http://pegasus-ims-service/ims/api
 postgresql:
   datasource:
-    dbUrl: jdbc:postgresql://sylveron.com:30678/pegasusdb
+    dbUrl: jdbc:postgresql://pegasus-shared-postgres:5432/pegasusdb
     username: pegasus001
     password: password123
 redis:
-  port: 30679
-  host: sylveron.com
+  port: 6379
+  host: pegasus-shared-redis-master
 kafka:
   enable: true
   url: http://sylveron.com:30681
