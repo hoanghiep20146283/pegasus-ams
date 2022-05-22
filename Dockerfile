@@ -13,6 +13,6 @@ LABEL git_short_commit_hash=$SHORT_COMMIT_HASH
 
 WORKDIR /app
 
-COPY modules/ams-api /app
+COPY . /app
 
 ENTRYPOINT java -jar *.jar
