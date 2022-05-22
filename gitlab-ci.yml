@@ -9,6 +9,7 @@ variables:
 
 stages:
   - build
+  - package
   - deploy
 
 before_script:
@@ -21,39 +22,46 @@ before_script:
   - echo WEB_IMAGE
   - echo $CI_REGISTRY_IMAGE
   - echo $DEPLOY_TOKEN
-#  - apk add --no-cache openssh-client bash docker-compose
-#  - docker-compose version
-#  - echo $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+
+package:
+  image: maven:3.8.4-jdk-8
+  stage: build
+  script:
+    - mvn clean install -s settings.xml
+  artifacts:
+    paths:
+      - modules/ams-api/target/*.jar
+  only:
+    - main
 
 build:
   image: docker:18.09
   services:
-    - docker:18.09-dind   
+    - docker:18.09-dind
   variables:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-  stage: build
+  stage: package
   script:
-      - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-      - docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg GIT_FULL_BRANCH=$(git rev-parse --abbrev-ref HEAD) --build-arg SHORT_COMMIT_HASH=${CI_COMMIT_SHA:0:8} -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:latest .
-      - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-      - docker push $CI_REGISTRY_IMAGE:latest
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg GIT_FULL_BRANCH=$(git rev-parse --abbrev-ref HEAD) --build-arg SHORT_COMMIT_HASH=${CI_COMMIT_SHA:0:8} -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:latest
   only:
     - main
 
-
 deploy:
   image:
-    name: bitnami/kubectl:latest
+    name: dtzar/helm-kubectl
     entrypoint: [""]
   stage: deploy
   script:
-    - export
     - kubectl config get-contexts
-    - kubectl config use-context $CI_PROJECT_PATH:$AGENT_NAME
+    - kubectl config use-context $CI_PROJECT_PATH:pegasus-ams
     - kubectl config set-context --current --namespace=default
     - kubectl get pods
-    - kubectl set image deployment/pegasus-ims pegasus-ims=${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} --record
+    - kubectl config view --raw
+    - cd charts/pegasus-ams-chart
+    - helm upgrade --install pegasus-ams --namespace=default .
   only:
     - main
