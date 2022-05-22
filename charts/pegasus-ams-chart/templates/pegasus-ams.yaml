@@ -62,5 +62,5 @@ data:
       "kafka.url": "{{.Values.kafka.url}}",
       "kafka.enable": "{{.Values.kafka.enable}}",
       "token.exp": "{{.Values.token.exp}}",
-      "token.unit": "{{.Values.token.unit}}",
+      "token.unit": "{{.Values.token.unit}}"
      }'
