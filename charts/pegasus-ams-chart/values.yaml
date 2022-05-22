@@ -1,7 +1,7 @@
 port: 8000
 image:
-  name: ducvu123/pegasus-ams
-  tag: 0.0.1
+  name: registry.gitlab.com/vuduc047/pegasus-ams
+  tag: latest
 context:
   path: /ams
 log:

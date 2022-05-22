@@ -1,18 +1,8 @@
 #### Stage 1: Build the application
-FROM maven:3.8.4-jdk-8 as build
+FROM openjdk:8-jdk-alpine as build
 
-ARG BUILD_DATE
-ARG GIT_FULL_BRANCH
-ARG SHORT_COMMIT_HASH
+VOLUME /tmp
 
-
-LABEL build_date=$BUILD_DATE
-LABEL git_branch=$GIT_FULL_BRANCH
-LABEL git_short_commit_hash=$SHORT_COMMIT_HASH
-
-
-WORKDIR /app
-
-COPY . /app
+ADD /target/*.jar app.jar
 
 ENTRYPOINT java -jar *.jar
