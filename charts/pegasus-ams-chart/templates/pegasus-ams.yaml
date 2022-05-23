@@ -35,8 +35,8 @@ spec:
     app: pegasus-ams
   ports:
     - protocol: TCP
-      port: 11001
-      targetPort: 11001
+      port: 80
+      targetPort: {{ .Values.port }}
 
 ---
 apiVersion: v1
