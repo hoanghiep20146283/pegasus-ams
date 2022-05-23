@@ -1,5 +1,6 @@
 package com.pegasus.ams.mgmt.service;
 
+import com.pegasus.ams.mgmt.dto.request.LoginDTO;
 import com.pegasus.ams.mgmt.dto.request.UserDTO;
 import com.pegasus.ams.mgmt.dto.response.UserResponseDTO;
 import com.pegasus.ams.mgmt.entity.User;
@@ -16,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +33,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    CasbinUpdatePolicyService casbinUpdatePolicyService;
 
     public List<UserResponseDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -77,5 +83,39 @@ public class UserService {
             }
             userRepository.deleteById(id);
         });
+    }
+
+    public UserResponseDTO signIn(LoginDTO request) {
+        User user= userRepository.findFirstByEmailOrUsername(request.getUserNameOrEmail()).orElseThrow(
+                () -> new NotFoundException("User not found")
+        );
+
+        boolean passMatch = passwordEncoder.matches(request.getPassword(),user.getPassword());
+
+        if (!passMatch) {
+            throw new BadRequestException("Password not correct");
+        }
+        UserResponseDTO result = UserMapper.toUserResponseDto(user);
+        casbinUpdatePolicyService.updatePolicy(user.getId(), true);
+
+        return result;
+    }
+
+    public UserResponseDTO signUp(UserDTO userDTO) {
+        if (userRepository.findFirstByUsername(userDTO.getUsername().toLowerCase()).isPresent()) {
+            throw new BadRequestException("Current Username has been use");
+        } else if (userRepository.findFirstByEmail(userDTO.getEmail()).isPresent()) {
+            throw new BadRequestException("Current Email has been use");
+        } else {
+            User user = UserMapper.toUser(userDTO);
+            String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+            user.setPassword(encryptedPassword);
+            user.setActivated(true);
+
+            user.setRoles(new HashSet<>(Collections.singletonList(roleRepository.findByCode("user"))));
+            userRepository.save(user);
+            log.debug("Created Information for User: {}", user);
+            return UserMapper.toUserResponseDto(user);
+        }
     }
 }

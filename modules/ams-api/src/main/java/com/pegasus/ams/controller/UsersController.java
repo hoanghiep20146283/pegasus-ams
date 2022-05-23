@@ -1,6 +1,7 @@
 package com.pegasus.ams.controller;
 
 import com.pegasus.ams.mgmt.dto.CustomPageDto;
+import com.pegasus.ams.mgmt.dto.request.LoginDTO;
 import com.pegasus.ams.mgmt.dto.request.UserDTO;
 import com.pegasus.ams.mgmt.dto.response.UserResponseDTO;
 import com.pegasus.ams.mgmt.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -60,6 +62,17 @@ public class UsersController {
     public ResponseEntity<Void> deleteUser(@RequestParam(value = "ids") List<Long> ids) {
         userService.deleteUser(ids);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity getSignInUser(@RequestBody LoginDTO loginDTO) {
+        return ResponseEntity.ok(userService.signIn(loginDTO));
+    }
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<UserResponseDTO> signUp(@Valid @RequestBody UserDTO userDTO) {
+        log.debug("REST request to sign up User : {}", userDTO);
+        return new ResponseEntity<>(userService.signUp(userDTO), HttpStatus.OK);
     }
 
 }

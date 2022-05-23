@@ -3,7 +3,7 @@ image:
   name: registry.gitlab.com/vuduc047/pegasus-ams
   tag: latest
 context:
-  path: /ams
+  path: /ams/api
 log:
   level:
     root: info
