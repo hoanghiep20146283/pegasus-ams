@@ -102,7 +102,8 @@ deploy:
     - kubectl get pods
     - kubectl config view --raw
     - cd charts/pegasus-ams-chart
-    - helm upgrade --install pegasus-ams --namespace=default .
+    - if ( kubectl get deployment -n default | grep -q "pegasus-ams" ); then echo "Skip helm"; else helm upgrade --install pegasus-ams --namespace=default .; fi
+    - kubectl set image deployment/pegasus-ams pegasus-ams=${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} --record
   only:
     - main
     - feature/anchore-integrate
