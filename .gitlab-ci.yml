@@ -7,6 +7,12 @@ variables:
   DOCKER_DRIVER: overlay2
   AGENT_NAME: pegasus
 
+cache:
+  paths:
+    - ./.m2/repository
+  # keep cache across branch
+  key: "$CI_BUILD_REF_NAME"
+  
 stages:
   - sonarqube-check
   - build
