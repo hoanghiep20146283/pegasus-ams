@@ -16,8 +16,8 @@ cache:
 
 stages:
   - sonarqube-check
-  - build
   - package
+  - build
   - component-scan
   - deploy
 
@@ -43,7 +43,7 @@ sonarqube-check:
 
 package:
   image: maven:3.8.4-jdk-8
-  stage: build
+  stage: package
   script:
     - mvn clean install -s settings.xml
   artifacts:
@@ -63,7 +63,7 @@ build:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-  stage: package
+  stage: build
   script:
     - ls
     - cd modules/ams-api
