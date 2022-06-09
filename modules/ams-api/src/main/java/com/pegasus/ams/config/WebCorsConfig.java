@@ -6,7 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -32,6 +35,14 @@ public class WebCorsConfig implements WebMvcConfigurer {
                 .maxAge(corsConfigProperties.getMaxAge())
                 .allowCredentials(corsConfigProperties.isAllowCredentials())
                 .allowedHeaders("Authorization", "Cache-Control", "Content-Type", "Referer", "X-XSRF-TOKEN", "Accept");
+    }
+
+    @Bean
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+        return http.authorizeExchange()
+            .pathMatchers("/actuator/**").permitAll()
+            .anyExchange().authenticated()
+            .and().build();
     }
 
     @Getter

@@ -16,6 +16,12 @@ spec:
         - name: pegasus-gitlab-registry-share-secret
       containers:
         - image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 2
+            httpGet:
+              path: /actuator/health
+              port: {{ .Values.port }}
           name: pegasus-ams
           imagePullPolicy: {{ .Values.kubernetes.imagePullPolicy }}
           env:
