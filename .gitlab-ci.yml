@@ -39,7 +39,7 @@ sonarqube-check:
     - mvn clean verify sonar:sonar -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.projectKey=Pegasus-AMS -s settings.xml
   only:
     - main
-    - feature/anchore-integrate
+    - PLC-40
 
 package:
   image: maven:3.8.4-jdk-8
@@ -51,7 +51,7 @@ package:
       - modules/ams-api/target/*.jar
   only:
     - main
-    - feature/anchore-integrate
+    - PLC-40
 
 build:
   image:
@@ -73,7 +73,7 @@ build:
     - docker push $CI_REGISTRY_IMAGE:latest
   only:
     - main
-    - feature/anchore-integrate
+    - PLC-40
 
 component-scan:
   stage: component-scan
