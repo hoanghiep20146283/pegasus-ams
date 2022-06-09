@@ -37,14 +37,6 @@ public class WebCorsConfig implements WebMvcConfigurer {
                 .allowedHeaders("Authorization", "Cache-Control", "Content-Type", "Referer", "X-XSRF-TOKEN", "Accept");
     }
 
-    @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        return http.authorizeExchange()
-            .pathMatchers("/actuator/**").permitAll()
-            .anyExchange().authenticated()
-            .and().build();
-    }
-
     @Getter
     @Setter
     @Component
