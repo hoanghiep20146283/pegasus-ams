@@ -20,7 +20,7 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 2
             httpGet:
-              path: /actuator/health
+              path: /ams/api/actuator/health
               port: {{ .Values.port }}
           name: pegasus-ams
           imagePullPolicy: {{ .Values.kubernetes.imagePullPolicy }}
