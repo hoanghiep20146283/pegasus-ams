@@ -17,7 +17,7 @@ jobs:
       # Checkout the code as the first step.
       - checkout
       # Use mvn clean and package as the standard maven build phase
-      - run: mkdir -p workspace/target
+      - run: mkdir -p /workspace/target
       - run:
           name: Build
           command: mvn -B -DskipTests clean install -s settings.xml
@@ -49,8 +49,8 @@ jobs:
       - run: pwd
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: /tmp/workspace/target
-      - run: ls -lrt /tmp/workspace/target
+          at: /workspace/target
+      - run: ls -lrt /workspace/target
       - run:
           name: Docker Login
           command: docker login registry.gitlab.com -u hoanghiep -p glpat-82jJhnwy2zV5_gH6D3vr
