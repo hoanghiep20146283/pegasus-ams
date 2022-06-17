@@ -36,9 +36,15 @@ jobs:
     docker:
       - image: docker:18.09
     steps:
-      - pwd
-      - ls
-      - cd modules/ams-api
+      - run:
+          name: pwd
+          command: pwd
+      - run:
+          name: ls
+          command: ls
+      - run:
+          name: checkout
+          command: cd modules/ams/api
       - run:
           name: Docker Login
           command: docker login registry.gitlab.com -u hoanghiep -p glpat-82jJhnwy2zV5_gH6D3vr
