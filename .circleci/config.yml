@@ -77,13 +77,7 @@ jobs:
       - run: export KUBECONFIG=kube/config
       - run:
           name: Update deployment
-          command:  kubectl config get-contexts;
-                    kubectl config use-context pegasus-ams;
-                    kubectl config set-context --current --namespace=default;
-                    kubectl get pods; cd charts/pegasus-ams-chart;
-                    if ( kubectl get deployment -n default | grep -q "pegasus-ams" ); then echo "Skip helm"; else helm upgrade --install pegasus-ams --namespace=default .; fi 
-                    kubectl set image deployment/pegasus-ams pegasus-ams=registry.gitlab.com/vuduc047/pegasus-ams/circleci:latest --record
-
+          command:  kubectl config get-contexts
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
