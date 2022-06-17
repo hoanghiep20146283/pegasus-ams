@@ -55,11 +55,10 @@ jobs:
       - run:
           name: Docker Login
           command: docker login registry.gitlab.com -u hoanghiep -p glpat-82jJhnwy2zV5_gH6D3vr
-      - run: cd modules/ams-api
       - run: pwd
       - run:
           name: Docker Build
-          command: docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg GIT_FULL_BRANCH=$(git rev-parse --abbrev-ref HEAD) -t registry.gitlab.com/vuduc047/pegasus-ams:latest -f ./modules/ams-api/Dockerfile ./modules/ams-api
+          command: cd /modules/ams-api; docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg GIT_FULL_BRANCH=$(git rev-parse --abbrev-ref HEAD) -t registry.gitlab.com/vuduc047/pegasus-ams:latest .
 
 
 # Invoke jobs via workflows
