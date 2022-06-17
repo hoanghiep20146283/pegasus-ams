@@ -47,7 +47,7 @@ jobs:
     requires:
       - build
     executor: my-executor
-      steps:
+    steps:
       - checkout
       - run: pwd
       - attach_workspace:
