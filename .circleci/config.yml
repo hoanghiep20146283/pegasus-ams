@@ -32,7 +32,7 @@ jobs:
           root: workspace
           # Must be relative path from root
           paths:
-            - target/ams-api-0.0.1-SNAPSHOT.jar
+            - target/*
 
   test:
     docker:
