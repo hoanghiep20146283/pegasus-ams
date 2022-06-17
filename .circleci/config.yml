@@ -67,6 +67,15 @@ jobs:
           name: Docker Push
           command: docker push registry.gitlab.com/vuduc047/pegasus-ams/circleci:latest
 
+  deploy:
+    docker:
+      - image: dtzar/helm-kubectl
+    steps:
+      - checkout
+      - run:
+          name: Update deployment
+          command: kubectl config view
+
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -80,3 +89,6 @@ workflows:
       - push:
           requires:
             - build
+      - deploy:
+          requires:
+            - push
