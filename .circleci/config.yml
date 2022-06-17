@@ -49,7 +49,7 @@ jobs:
       - checkout
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: workspace/target
+          at: workspace/target/ams-api-0.0.1-SNAPSHOT.jar
       - run: ls -lrt workspace/target/
       - run:
           name: Docker Login
@@ -58,7 +58,7 @@ jobs:
       - run: pwd
       - run:
           name: Docker Build
-          command: docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg GIT_FULL_BRANCH=$(git rev-parse --abbrev-ref HEAD) -t registry.gitlab.com/vuduc047/pegasus-ams:latest -f ./modules/ams-api/Dockerfile
+          command: docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg GIT_FULL_BRANCH=$(git rev-parse --abbrev-ref HEAD) -t registry.gitlab.com/vuduc047/pegasus-ams:latest -f ./modules/ams-api/Dockerfile ./modules/ams-api
 
 
 # Invoke jobs via workflows
