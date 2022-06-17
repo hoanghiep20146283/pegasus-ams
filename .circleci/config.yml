@@ -49,11 +49,9 @@ jobs:
     executor: my-executor
     steps:
       - checkout
-      - run: pwd
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: /tmp/workspace/target
-      - run: ls -lrt /tmp/workspace/target
       - run:
           name: Docker Login
           command: docker login registry.gitlab.com -u hoanghiep -p glpat-82jJhnwy2zV5_gH6D3vr
