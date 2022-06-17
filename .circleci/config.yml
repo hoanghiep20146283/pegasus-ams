@@ -51,7 +51,7 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: workspace/target
-      - run: ls -lrt workspace/
+      - run: ls -lrt workspaces/
       - run:
           name: Docker Login
           command: docker login registry.gitlab.com -u hoanghiep -p glpat-82jJhnwy2zV5_gH6D3vr
