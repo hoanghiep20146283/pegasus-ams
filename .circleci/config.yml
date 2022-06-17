@@ -73,12 +73,11 @@ jobs:
       - image: dtzar/helm-kubectl
     steps:
       - checkout
-      - run: ls -lrt ~/.kube
+      - run: echo $KUBECONFIG
       - run: export KUBECONFIG=kube/config
       - run:
           name: Update deployment
-          command:  kubectl config get-contexts;
-                    kubectl config use-context microk8s
+          command:  kubectl config get-contexts --kubeconfig=./kube/config
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
