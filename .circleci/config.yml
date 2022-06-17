@@ -23,7 +23,7 @@ jobs:
           name: Build
           command: mvn -B -DskipTests clean install -s settings.xml
       - store_artifacts:
-          path: /modules/ams-api/target
+          path: /home/circleci/project/modules/ams-api/target
           destination: target
 
   test:
