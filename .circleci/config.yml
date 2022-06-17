@@ -73,7 +73,7 @@ jobs:
           root: .kube
           # Must be relative path from root
           paths:
-            - config1
+            - config
 
   deploy:
     docker:
