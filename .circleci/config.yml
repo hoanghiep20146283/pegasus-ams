@@ -66,15 +66,24 @@ jobs:
       - run:
           name: Docker Push
           command: docker push registry.gitlab.com/vuduc047/pegasus-ams/circleci:latest
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+          # taken to be the root directory of the workspace.
+          root: .kube
+          # Must be relative path from root
+          paths:
+            - config
 
   deploy:
     docker:
       - image: dtzar/helm-kubectl
     steps:
       - checkout
+      - attach_workspace:
+          at: .kube/config
       - run:
           name: Update deployment
-          command: kubectl config view
+          command: kubectl config get-contexts --kubeconfig=.kube/config
 
 
 # Invoke jobs via workflows
