@@ -55,6 +55,7 @@ jobs:
           # Must be absolute path or relative path from working_directory
           at: workspace/target/ams-api-0.0.1-SNAPSHOT.jar
       - run: ls -lrt workspace/target/
+      - run: mkdir modules/ams-api/target; cp -r workspace/target/* modules/ams-api/target
       - run:
           name: Docker Login
           command: docker login registry.gitlab.com -u hoanghiep -p glpat-82jJhnwy2zV5_gH6D3vr
