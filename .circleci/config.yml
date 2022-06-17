@@ -73,11 +73,9 @@ jobs:
       - image: dtzar/helm-kubectl
     steps:
       - checkout
-      - run: echo $KUBECONFIG
-      - run: export KUBECONFIG=kube/config
       - run:
           name: Update deployment
-          command:  kubectl config get-contexts;
+          command:  kubectl config get-contexts --kubeconfig=./kube/config;
                     kubectl config use-context microk8s --kubeconfig=./kube/config;
                     kubectl config set-context --current --namespace=default --kubeconfig=./kube/config;
                     if ( kubectl get deployment -n default --kubeconfig=./kube/config | grep -q "pegasus-ams" ); then echo "Skip helm"; else helm upgrade --install pegasus-ams --namespace=default .; fi;
