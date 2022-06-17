@@ -54,7 +54,7 @@ jobs:
       - run:
           name: Docker Login
           command: docker login registry.gitlab.com -u hoanghiep -p glpat-82jJhnwy2zV5_gH6D3vr
-      - run: cd /modules/ams-api
+      - run: cd modules/ams-api
       - run: pwd
       - run:
           name: Docker Build
