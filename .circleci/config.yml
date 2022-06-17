@@ -22,6 +22,9 @@ jobs:
       - run:
           name: Build
           command: mvn -B -DskipTests clean install -s settings.xml
+      - store_artifacts:
+          path: /modules/ams-api/target
+          destination: target
 
   test:
     docker:
