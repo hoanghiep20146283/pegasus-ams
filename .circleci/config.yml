@@ -48,6 +48,9 @@ jobs:
       - image: docker:18.09
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: workspace/target/ams-api-0.0.1-SNAPSHOT.jar
