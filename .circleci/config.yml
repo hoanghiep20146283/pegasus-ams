@@ -25,6 +25,13 @@ jobs:
       - store_artifacts:
           path: /home/circleci/project/modules/ams-api/target
           destination: target
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+          # taken to be the root directory of the workspace.
+          root: home
+          # Must be relative path from root
+          paths:
+            - circleci/project/modules/ams-api/target
 
   test:
     docker:
