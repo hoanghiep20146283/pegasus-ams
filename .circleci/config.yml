@@ -66,11 +66,11 @@ jobs:
       - run:
           name: Docker Push
           command: docker push registry.gitlab.com/vuduc047/pegasus-ams/circleci:latest
-      - run: ls -lrt ./.kube
+      - run: ls -lrt ./kube
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
           # taken to be the root directory of the workspace.
-          root: .kube
+          root: kube
           # Must be relative path from root
           paths:
             - config
@@ -82,15 +82,15 @@ jobs:
       - checkout
       - run: ls -lrt .
       - attach_workspace:
-          at: .kube/config
+          at: kube/config
       - run:
           name: Update deployment
-          command:  kubectl config get-contexts --kubeconfig=.kube/config; |
-                    kubectl config use-context pegasus-ams --kubeconfig=.kube/config; |
-                    kubectl config set-context --current --namespace=default --kubeconfig=.kube/config; |
-                    kubectl get pods; cd charts/pegasus-ams-chart --kubeconfig=.kube/config; |
-                    if ( kubectl get deployment -n default --kubeconfig=.kube/config | grep -q "pegasus-ams" ); then echo "Skip helm"; else helm upgrade --install pegasus-ams --namespace=default .; fi |
-                    kubectl set image deployment/pegasus-ams pegasus-ams=registry.gitlab.com/vuduc047/pegasus-ams/circleci:latest --record --kubeconfig=.kube/config
+          command:  kubectl config get-contexts --kubeconfig=kube/config; |
+                    kubectl config use-context pegasus-ams --kubeconfig=kube/config; |
+                    kubectl config set-context --current --namespace=default --kubeconfig=kube/config; |
+                    kubectl get pods; cd charts/pegasus-ams-chart --kubeconfig=kube/config; |
+                    if ( kubectl get deployment -n default --kubeconfig=kube/config | grep -q "pegasus-ams" ); then echo "Skip helm"; else helm upgrade --install pegasus-ams --namespace=default .; fi |
+                    kubectl set image deployment/pegasus-ams pegasus-ams=registry.gitlab.com/vuduc047/pegasus-ams/circleci:latest --record --kubeconfig=kube/config
 
 
 # Invoke jobs via workflows
