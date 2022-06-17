@@ -44,7 +44,8 @@ jobs:
           command: mvn test -s settings.xml
 
   push:
-    executor: my-executor
+    docker:
+      - image: docker:18.09
     steps:
       - checkout
       - attach_workspace:
