@@ -66,7 +66,7 @@ jobs:
       - run:
           name: Docker Push
           command: docker push registry.gitlab.com/vuduc047/pegasus-ams/circleci:latest
-      - run: ls -lrt ./kube
+      - run: ls -lrt ./.kube
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
           # taken to be the root directory of the workspace.
