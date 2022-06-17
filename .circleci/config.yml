@@ -80,6 +80,7 @@ jobs:
       - image: dtzar/helm-kubectl
     steps:
       - checkout
+      - run: ls -lrt .
       - attach_workspace:
           at: .kube/config
       - run:
