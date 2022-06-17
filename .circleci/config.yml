@@ -17,11 +17,12 @@ jobs:
       # Checkout the code as the first step.
       - checkout
       # Use mvn clean and package as the standard maven build phase
-      - run: mkdir -p /workspace/target
+      - run: pwd
+      - run: mkdir -p workspace/target
       - run:
           name: Build
           command: mvn -B -DskipTests clean install -s settings.xml
-      - run: cp /home/circleci/project/modules/ams-api/target/* > /workspace/target/
+      - run: cp /home/circleci/project/modules/ams-api/target/* > workspace/target/
       - store_artifacts:
           path: /home/circleci/project/modules/ams-api/target
           destination: target
