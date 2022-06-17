@@ -21,7 +21,7 @@ jobs:
       - run:
           name: Build
           command: mvn -B -DskipTests clean install -s settings.xml
-      - run: cp /home/circleci/project/modules/ams-api/target/* > workspace/target
+      - run: cp /home/circleci/project/modules/ams-api/target/* > /workspace/target/
       - store_artifacts:
           path: /home/circleci/project/modules/ams-api/target
           destination: target
@@ -50,7 +50,7 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: /workspace/target
-      - run: ls -lrt /workspace/target
+      - run: ls -lrt /workspace/target/
       - run:
           name: Docker Login
           command: docker login registry.gitlab.com -u hoanghiep -p glpat-82jJhnwy2zV5_gH6D3vr
