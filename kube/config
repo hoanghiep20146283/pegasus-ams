@@ -51,10 +51,7 @@ contexts:
     namespace: default
     user: minikube
   name: minikube
-- context:
-    cluster: nonprod-aks
-    user: clusterUser_nonprod-rg_nonprod-aks
-  name: nonprod-aks
+
 - context:
     cluster: ponytadevelopment-aks
     user: clusterUser_ponytadevelopment-rg_ponytadevelopment-aks

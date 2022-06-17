@@ -73,7 +73,7 @@ jobs:
       - image: dtzar/helm-kubectl
     steps:
       - checkout
-      - run: ls -lrt .
+      - run: ls -lrt ~/.kube
       - run: export KUBECONFIG=kube/config
       - run:
           name: Update deployment
