@@ -22,7 +22,7 @@ jobs:
       - run:
           name: Build
           command: mvn -B -DskipTests clean install -s settings.xml
-      - run: cp /home/circleci/project/modules/ams-api/target/* workspace/target/
+      - run: cp -r /home/circleci/project/modules/ams-api/target/* workspace/target/
       - store_artifacts:
           path: /home/circleci/project/modules/ams-api/target
           destination: target
