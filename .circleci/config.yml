@@ -21,21 +21,21 @@ jobs:
       - checkout
       # Use mvn clean and package as the standard maven build phase
       - run: pwd
-      - run: mkdir -p workspace/target
+      - run: mkdir -p /tmp/workspace/target
       - run:
           name: Build
           command: mvn -B -DskipTests clean install -s settings.xml
-      - run: cp -r /home/circleci/project/modules/ams-api/target/* workspace/target/
+      - run: cp -r /home/circleci/project/modules/ams-api/target/* /tmp/workspace/target/
       - store_artifacts:
           path: /home/circleci/project/modules/ams-api/target
           destination: target
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
           # taken to be the root directory of the workspace.
-          root: workspace
+          root: /tmp
           # Must be relative path from root
           paths:
-            - target/*
+            - workspace/target/*
 
   test:
     docker:
@@ -56,9 +56,9 @@ jobs:
           docker_layer_caching: true
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: workspace/target/ams-api-0.0.1-SNAPSHOT.jar
-      - run: ls -lrt workspace/target/
-      - run: mkdir modules/ams-api/target; cp -r workspace/target/* modules/ams-api/target
+          at: /tmp/workspace/target/ams-api-0.0.1-SNAPSHOT.jar
+      - run: ls -lrt /tmp/workspace/target/
+      - run: mkdir modules/ams-api/target; cp -r /tmp/workspace/target/* modules/ams-api/target
       - run:
           name: Docker Login
           command: docker login registry.gitlab.com -u hoanghiep -p glpat-82jJhnwy2zV5_gH6D3vr
