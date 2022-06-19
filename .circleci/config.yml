@@ -9,6 +9,7 @@ executors:
 
 orbs:
   slack: circleci/slack@4.9.3
+  shellcheck: circleci/shellcheck@3.1.1
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
@@ -134,8 +135,10 @@ workflows:
       - push:
           requires:
             - build
+            - shellcheck/check
       - deploy:
           requires:
             - push
+            - shellcheck/check
       - notify:
           context: slack-secrets
