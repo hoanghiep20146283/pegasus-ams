@@ -67,7 +67,7 @@ jobs:
 #    machine:
 #      image: ubuntu-2004:202104-01  # any available image
 #      docker_layer_caching: true
-    parallelism: 31
+    parallelism: 20
     steps:
       - checkout
       - setup_remote_docker:
