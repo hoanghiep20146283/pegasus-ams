@@ -65,6 +65,7 @@ jobs:
     machine:
       image: ubuntu-2004:202104-01  # any available image
       docker_layer_caching: true
+    parallelism: 50
     steps:
       - checkout
       - attach_workspace:
