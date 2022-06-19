@@ -14,6 +14,10 @@ orbs:
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
+  - shellcheck/check:
+      dir: ./scripts
+      exclude: SC2148
+
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
   build:
     executor: my-executor
