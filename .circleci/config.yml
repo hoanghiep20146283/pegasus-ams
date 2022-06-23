@@ -149,6 +149,6 @@ workflows:
           requires:
             - build
             - shellcheck/check
-      - deploy:
+      - deploy
       - notify:
           context: slack-secrets
