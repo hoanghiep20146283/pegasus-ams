@@ -100,7 +100,7 @@ jobs:
           command:  mkdir -p ~/.docker;
                     echo -n "$CIRCLECI_CRT" | base64 -d > ./circleci.crt;
                     echo -n "$CIRCLECI_KEY" | base64 -d > ./circleci.key;
-                    cat ./circleci.crt;
+                    echo $CIRCLECI_CRT;
                     kubectl config set-cluster microk8s-cluster --server=https://14.225.255.20:16443 --insecure-skip-tls-verify;
                     kubectl config set-credentials circleci --client-certificate=./circleci.crt --client-key=./circleci.key;
                     kubectl config set-context circleci --cluster=microk8s-cluster --user=circleci;
