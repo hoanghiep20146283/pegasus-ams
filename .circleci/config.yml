@@ -45,7 +45,7 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
-  test;/
+  test:
     docker:
       - image: cimg/openjdk:11.0
     steps:
