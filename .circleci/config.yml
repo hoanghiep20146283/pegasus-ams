@@ -99,7 +99,7 @@ jobs:
           name: Update deployment
           command:  mkdir -p ~/.docker;
                     kubectl config set-cluster microk8s-cluster --server=https://14.225.255.20:16443 --insecure-skip-tls-verify --kubeconfig=circleci;
-                    kubectl config set-credentials circleci --client-certificate=circleci.crt --client-key=circleci.key --kubeconfig=circleci;
+                    kubectl config set-credentials circleci --client-certificate=./circleci.crt --client-key=./circleci.key --kubeconfig=circleci;
                     kubectl config set-context circleci --cluster=microk8s-cluster --user=circleci --kubeconfig=circleci;
                     kubectl config use-context circleci --kubeconfig=circleci;
                     kubectl config view --kubeconfig=circleci;
