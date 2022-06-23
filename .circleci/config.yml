@@ -98,12 +98,9 @@ jobs:
       - run:
           name: Update deployment
           command:  mkdir -p ~/.docker;
-                    echo -n "$CIRCLECI_CRT" | base64 -d;
-                    echo -n "$CIRCLECI_CRT" | base64 -d > ~/.docker/circleci.crt;
-                    chmod 644 ~/.docker/circleci.crt;
-                    cat ~/.docker/circleci.crt;
-                    echo -n "$CIRCLECI_KEY" | base64 -d > ~/.docker/circleci.key;
-                    kubectl config set-credentials circleci --client-certificate=~/.docker/circleci.crt --client-key=~/.docker/circleci.key --embed-certs=true;
+                    export CLIENT_CRT = $(echo -n "$CIRCLECI_CRT" | base64 -d);
+                    export CLIENT_KEY = $(echo -n "$CIRCLECI_KEY" | base64 -d);
+                    kubectl config set-credentials circleci --client-certificate=$CLIENT_CRT --client-key=$CLIENT_KEY --embed-certs=true;
                     kubectl config set-context circleci --cluster=microk8s-cluster --user=circleci;
                     if ( kubectl get deployment -n default | grep -q "pegasus-ams" ); then echo "Skip helm"; else helm upgrade --install pegasus-ams --namespace=default .; fi;
                     kubectl set image deployment/pegasus-ams pegasus-ams=registry.gitlab.com/vuduc047/pegasus-ams/circleci:$CIRCLE_SHA1 --record
