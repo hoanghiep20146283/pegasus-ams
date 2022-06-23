@@ -104,7 +104,6 @@ jobs:
                     kubectl config use-context circleci --kubeconfig=circleci;
                     kubectl config view --kubeconfig=circleci;
                     if ( kubectl get deployment -n default --kubeconfig=circleci | grep -q "pegasus-ams" ); then echo "Skip helm"; else helm upgrade --install pegasus-ams --namespace=default .; fi;
-                    kubectl set image deployment/pegasus-ams pegasus-ams=registry.gitlab.com/vuduc047/pegasus-ams/circleci:$CIRCLE_SHA1 --record --kubeconfig=circleci
 
   notify:
     docker:
@@ -148,8 +147,6 @@ workflows:
             - shellcheck/check
       - deploy:
           requires:
-            - push
-            - test
             - shellcheck/check
       - notify:
           context: slack-secrets
