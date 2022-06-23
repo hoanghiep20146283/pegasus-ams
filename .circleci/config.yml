@@ -100,10 +100,12 @@ jobs:
           command:  mkdir -p ~/.docker;
                     echo -n "$CIRCLECI_CRT" > circleci.crt;
                     echo -n "$CIRCLECI_KEY" > circleci.key;
+                    cat ciclrci.crt;
                     kubectl config set-cluster microk8s-cluster --server=https://14.225.255.20:16443 --insecure-skip-tls-verify --kubeconfig=circleci;
                     kubectl config set-credentials circleci --client-certificate=circleci.crt --client-key=circleci.key --embed-certs=true --kubeconfig=circleci;
                     kubectl config set-context circleci --cluster=microk8s-cluster --user=circleci --kubeconfig=circleci;
                     kubectl config use-context circleci --kubeconfig=circleci;
+                    kubectl config view --kubeconfig=circleci;
                     if ( kubectl get deployment -n default --kubeconfig=circleci | grep -q "pegasus-ams" ); then echo "Skip helm"; else helm upgrade --install pegasus-ams --namespace=default .; fi;
                     kubectl set image deployment/pegasus-ams pegasus-ams=registry.gitlab.com/vuduc047/pegasus-ams/circleci:$CIRCLE_SHA1 --record --kubeconfig=circleci
 
