@@ -98,15 +98,13 @@ jobs:
       - run:
           name: Update deployment
           command:  mkdir -p ~/.docker;
-                    pwd;
-                    ls -lrt;
-                    kubectl config set-cluster microk8s-cluster --server=https://14.225.255.20:16443 --insecure-skip-tls-verify --kubeconfig=circleci;
-                    kubectl config set-credentials circleci --client-certificate=./circleci.crt --client-key=./circleci.key --kubeconfig=circleci;
-                    kubectl config set-context circleci --cluster=microk8s-cluster --user=circleci --kubeconfig=circleci;
-                    kubectl config use-context circleci --kubeconfig=circleci;
-                    kubectl config view --kubeconfig=circleci;
-                    if ( kubectl get deployment -n default --kubeconfig=circleci | grep -q "pegasus-ams" ); then echo "Skip helm"; else helm upgrade --install pegasus-ams --namespace=default .; fi;
-                    kubectl set image deployment/pegasus-ams pegasus-ams=registry.gitlab.com/vuduc047/pegasus-ams/circleci:$CIRCLE_SHA1 --record --kubeconfig=circleci
+                    kubectl config set-cluster microk8s-cluster --server=https://14.225.255.20:16443 --insecure-skip-tls-verify;
+                    kubectl config set-credentials circleci --client-certificate=./circleci.crt --client-key=./circleci.key;
+                    kubectl config set-context circleci --cluster=microk8s-cluster --user=circleci;
+                    kubectl config use-context circleci;
+                    kubectl config view;
+                    if ( kubectl get deployment -n default | grep -q "pegasus-ams" ); then echo "Skip helm"; else helm upgrade --install pegasus-ams --namespace=default .; fi;
+                    kubectl set image deployment/pegasus-ams pegasus-ams=registry.gitlab.com/vuduc047/pegasus-ams/circleci:$CIRCLE_SHA1 --record
 
   notify:
     docker:
