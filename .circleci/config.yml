@@ -102,7 +102,7 @@ jobs:
                     echo -n $CIRCLECI_KEY > ./circleci.key;
                     cat ./circleci.crt;
                     kubectl config set-cluster microk8s-cluster --server=https://14.225.255.20:16443 --insecure-skip-tls-verify;
-                    kubectl config set-credentials circleci --client-certificate=./circleci.crt --client-key=./circleci.key;
+                    kubectl config set-credentials circleci --client-certificate=$CIRCLECI_CRT --client-key=$CIRCLECI_KEY;
                     kubectl config set-context circleci --cluster=microk8s-cluster --user=circleci;
                     kubectl config use-context circleci;
                     kubectl config view;
@@ -150,7 +150,5 @@ workflows:
             - build
             - shellcheck/check
       - deploy:
-          requires:
-            - shellcheck/check
       - notify:
           context: slack-secrets
