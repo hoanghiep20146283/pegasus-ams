@@ -98,7 +98,9 @@ jobs:
       - run:
           name: Update deployment
           command:  mkdir -p ~/.docker;
+                    echo -n "$CIRCLECI_CRT" | base64 -d;
                     echo -n "$CIRCLECI_CRT" | base64 -d > ~/.docker/circleci.crt;
+                    ls -lrt ~/.docker;
                     echo -n "$CIRCLECI_KEY" | base64 -d > ~/.docker/circleci.key;
                     kubectl config set-credentials circleci --client-certificate=~/.docker/circleci.crt --client-key=~/.docker/circleci.key --embed-certs=true;
                     kubectl config set-context circleci --cluster=microk8s-cluster --user=circleci;
