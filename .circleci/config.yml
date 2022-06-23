@@ -45,7 +45,7 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
-  test:
+  test;/
     docker:
       - image: cimg/openjdk:11.0
     steps:
@@ -97,11 +97,14 @@ jobs:
       - checkout
       - run:
           name: Update deployment
-          command:  kubectl config get-contexts --kubeconfig=./kube/config;
-                    kubectl config use-context microk8s --kubeconfig=./kube/config;
-                    kubectl config set-context --current --namespace=default --kubeconfig=./kube/config;
-                    if ( kubectl get deployment -n default --kubeconfig=./kube/config | grep -q "pegasus-ams" ); then echo "Skip helm"; else helm upgrade --install pegasus-ams --namespace=default .; fi;
-                    kubectl set image deployment/pegasus-ams pegasus-ams=registry.gitlab.com/vuduc047/pegasus-ams/circleci:$CIRCLE_SHA1 --record --kubeconfig=./kube/config
+          command:  mkdir -p ~/.docker;
+                    echo -n "$CIRCLECI_CRT" | base64 -d > ~/.docker/circleci.crt;
+                    echo -n "$CIRCLECI_KEY" | base64 -d > ~/.docker/circleci.key;
+                    kubectl config set-credentials circleci --client-certificate=~/.docker/circleci.crt --client-key=~/.docker/circleci.key --embed-certs=true
+                    kubectl config set-context circleci --cluster=microk8s-cluster --user=circleci
+                    kubectl config set-context --current --namespace=default;
+                    if ( kubectl get deployment -n default | grep -q "pegasus-ams" ); then echo "Skip helm"; else helm upgrade --install pegasus-ams --namespace=default .; fi;
+                    kubectl set image deployment/pegasus-ams pegasus-ams=registry.gitlab.com/vuduc047/pegasus-ams/circleci:$CIRCLE_SHA1 --record
 
   notify:
     docker:
