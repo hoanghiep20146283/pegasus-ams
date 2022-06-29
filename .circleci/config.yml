@@ -33,7 +33,7 @@ jobs:
       - run:
           name: split tests
           command: export TEST=$(circleci tests glob "logs/*.log" | circleci tests split --split-by=timings);
-                   echo "TEST FILES: ${foo}";
+                   echo $TEST;
       - store_artifacts:
           path: /home/circleci/project/modules/ams-api/target
           destination: target
