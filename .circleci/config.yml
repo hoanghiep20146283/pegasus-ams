@@ -84,6 +84,7 @@ jobs:
               xmlstarlet ed --inplace -i "//testcase" -t attr -n file -v "" $file
               # Update attribute "file" based on "testcase" attribute
               xmlstarlet
+            done
       - store_test_results:
           path: ~/test-results/junit
       - save_cache:
