@@ -77,13 +77,9 @@ jobs:
             FILES="/home/circleci/test-results/junit/*"
             for file in $FILES
             do
-              echo "Processing $file file..."
-              # Remove surefiere and failsafe namespaces
+              echo "Processing $file file...";
               xmlstarlet ed --inplace -d '//testsuite/@xsi:noNamespaceSchemaLocation' $file
-              # Add attribute "file" to testcase nodes
               xmlstarlet ed --inplace -i "//testcase" -t attr -n file -v "" $file
-              # Update attribute "file" based on "testcase" attribute
-              xmlstarlet
             done
       - store_test_results:
           path: ~/test-results/junit
