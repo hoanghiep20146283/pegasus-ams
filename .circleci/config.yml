@@ -123,6 +123,7 @@ jobs:
     resource_class: pegasus/ams
     steps:
       - run: echo "Hi I'm on Pegasus-ams Runners!"
+      - run: docker images
 
   notify:
     docker:
