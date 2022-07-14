@@ -41,9 +41,6 @@ jobs:
           mkdir -p ~/test-results/junit/
           find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
           when: always
-      - run:
-        name: split tests
-        command: export TEST=$(circleci tests glob "logs/*.log" | circleci tests split --split-by=timings); echo $TEST;
       - store_artifacts:
           path: /home/circleci/project/modules/ams-api/target
           destination: target
