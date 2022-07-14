@@ -70,20 +70,19 @@ jobs:
           when: always
             # Make xml test reports CircleCI compliant
             # #########################
-      - run:
-          name: Make xml test reports CircleCI compliant
-          command: |
-            sudo apt-get update && sudo apt-get install -y xmlstarlet
-            FILES="/home/circleci/test-results/junit/*"
-            for file in $FILES
-            do
-              echo "Processing $file file...";
-              xmlstarlet ed --inplace -d '//testsuite/@xsi:noNamespaceSchemaLocation' $file
-              xmlstarlet ed --inplace -i "//testcase" -t attr -n file -v "" $file
-            done
-      - store_artifacts:
+#      - run:
+#          name: Make xml test reports CircleCI compliant
+#          command: |
+#            sudo apt-get update && sudo apt-get install -y xmlstarlet
+#            FILES="/home/circleci/test-results/junit/*"
+#            for file in $FILES
+#            do
+#              echo "Processing $file file...";
+#              xmlstarlet ed --inplace -d '//testsuite/@xsi:noNamespaceSchemaLocation' $file
+#              xmlstarlet ed --inplace -i "//testcase" -t attr -n file -v "" $file
+#            done
+      - store_test_results:
           path: ~/test-results/junit
-          destination: target
       - save_cache:
           paths:
             - ~/.m2
