@@ -124,6 +124,7 @@ jobs:
     steps:
       - run: echo "Hi I'm on Pegasus-ams Runners!"
       - run: docker images
+      - run: docker --version
 
   notify:
     docker:
