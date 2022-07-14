@@ -31,11 +31,6 @@ jobs:
           name: Build
           command: mvn -B -DskipTests clean install -s settings.xml
       - run: cp -r /home/circleci/project/modules/ams-api/target/* /tmp/workspace/target/
-      - run:
-          name: split tests
-          command: export TEST=$(circleci tests glob "logs/*.log" | circleci tests split --split-by=timings);
-                 echo $TEST;
-
       - store_artifacts:
           path: /home/circleci/project/modules/ams-api/target
           destination: target
