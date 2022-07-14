@@ -32,14 +32,14 @@ jobs:
           command: mvn -B -DskipTests clean install -s settings.xml
       - run: cp -r /home/circleci/project/modules/ams-api/target/* /tmp/workspace/target/
       - run:
-        name: split tests
-        command: export TEST=$(circleci tests glob "logs/*.log" | circleci tests split --split-by=timings);
+          name: split tests
+          command: export TEST=$(circleci tests glob "logs/*.log" | circleci tests split --split-by=timings);
                  echo $TEST;
       - run:
-        name: Save test results
-        command: |
-          mkdir -p ~/test-results/junit/
-          find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
           when: always
       - store_artifacts:
           path: /home/circleci/project/modules/ams-api/target
