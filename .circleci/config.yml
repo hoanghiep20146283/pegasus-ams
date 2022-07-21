@@ -31,10 +31,6 @@ jobs:
           name: Build
           command: mvn -B -DskipTests clean install -s settings.xml
       - run: cp -r /home/circleci/project/modules/ams-api/target/* /tmp/workspace/target/
-      - run:
-          name: split tests
-          command: export TEST=$(circleci tests glob "logs/*.log" | circleci tests split --split-by=timings);
-                   echo $TEST;
       - store_artifacts:
           path: /home/circleci/project/modules/ams-api/target
           destination: target
@@ -59,8 +55,16 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "pom.xml" }}
       - run:
-          name: Build
+          name: Test
           command: mvn test -s settings.xml
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/test-results/junit
       - save_cache:
           paths:
             - ~/.m2
@@ -106,13 +110,21 @@ jobs:
                     echo -n "$CIRCLECI_CRT" | base64 -d > ./circleci.crt;
                     echo -n "$CIRCLECI_KEY" | base64 -d > ./circleci.key;
                     echo $CIRCLECI_CRT;
-                    kubectl config set-cluster microk8s-cluster --server=https://14.225.255.20:16443 --insecure-skip-tls-verify;
+                    kubectl config set-cluster microk8s-cluster --server=https://14.225.204.84:16443 --insecure-skip-tls-verify;
                     kubectl config set-credentials circleci --client-certificate=./circleci.crt --client-key=./circleci.key;
                     kubectl config set-context circleci --cluster=microk8s-cluster --user=circleci;
                     kubectl config use-context circleci;
                     kubectl config view;
                     if ( kubectl get deployment -n default | grep -q "pegasus-ams" ); then echo "Skip helm"; else helm upgrade --install pegasus-ams --namespace=default .; fi;
                     kubectl set image deployment/pegasus-ams pegasus-ams=registry.gitlab.com/vuduc047/pegasus-ams/circleci:$CIRCLE_SHA1 --record
+
+  runner-test:
+    machine: true
+    resource_class: pegasus/ams
+    steps:
+      - run: echo "Hi I'm on Pegasus-ams Runners!"
+      - run: docker images
+      - run: docker --version
 
   notify:
     docker:
@@ -157,5 +169,6 @@ workflows:
       - deploy:
           requires:
             - push
+      - runner-test
       - notify:
           context: slack-secrets
