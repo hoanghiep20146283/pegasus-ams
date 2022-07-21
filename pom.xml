@@ -77,6 +77,12 @@
 				<version>${pegasus.base.common.version}</version>
 			</dependency>
 
+			<!-- Monitoring -->
+			<dependency>
+				<groupId>io.micrometer</groupId>
+				<artifactId>micrometer-registry-prometheus</artifactId>
+				<version>1.1.5</version>
+			</dependency>
 
 			<!-- 3rd party lib -->
 			<dependency>

@@ -71,6 +71,10 @@ management:
     health:
       probes:
         enabled: true
+    web:
+      exposure:
+        include: *
+
 pegasus: # this is where the pegasus-starter config!
   base:
     kafka:
