@@ -73,7 +73,7 @@ management:
         enabled: true
     web:
       exposure:
-        include: *
+        include: "*"
 
 pegasus: # this is where the pegasus-starter config!
   base:
